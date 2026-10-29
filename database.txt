@@ -1,0 +1,48 @@
+Create the database
+CREATE DATABASE IF NOT EXISTS student_db
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE student_db;
+
+CREATE TABLE IF NOT EXISTS students (
+    StudentNumber INT UNSIGNED     NOT NULL AUTO_INCREMENT,
+    Name          VARCHAR(50)      NOT NULL,
+    Surname       VARCHAR(50)      NOT NULL,
+    Age           TINYINT UNSIGNED NOT NULL,
+    CellNumber    CHAR(10)         NOT NULL,          
+    EmailAddress  VARCHAR(100)     NOT NULL,
+    Password      VARCHAR(255)     NOT NULL,          
+    Fees          DECIMAL(10,2)    NOT NULL,
+    CreatedAt     TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (StudentNumber),
+    UNIQUE KEY uq_students_email (EmailAddress),
+    CONSTRAINT chk_students_age  CHECK (Age BETWEEN 16 AND 100),
+    CONSTRAINT chk_students_fees CHECK (Fees > 0)
+) ENGINE=InnoDB
+  AUTO_INCREMENT = 120
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+
+
+
+
+View all registered students (newest first)
+SELECT StudentNumber, Name, Surname, Age, CellNumber, EmailAddress, Fees, CreatedAt
+FROM students
+ORDER BY StudentNumber DESC;
+
+
+Find a student by student number
+SELECT * FROM students WHERE StudentNumber = 120
+
+
+Total fees captured
+SELECT COUNT(*) AS TotalStudents, SUM(Fees) AS TotalFees FROM students;
+
+
+Delete 
+
+ALTER TABLE students AUTO_INCREMENT = 120;
